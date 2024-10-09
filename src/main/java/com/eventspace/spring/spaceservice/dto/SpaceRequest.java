@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Data
 public class SpaceRequest {
+    private String name;
     private String address;
     private String location;
     private Integer size;
