@@ -22,5 +22,5 @@ public interface SpaceMapper {
     List<SpaceRequest> spaceListToSpaceRequestList(List<Space> spaces);
     List<Space> spaceRequestListToSpaceList(List<SpaceRequest> spaceRequests);
     List<Space> spaceResponseListToSpaceList(List<SpaceResponse> spaceResponses);
-
+//lol
 }

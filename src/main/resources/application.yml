@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://${DATABASE_DOMAIN:localhost}:${DATABASE_PORT:5432}/${DATABASE_NAME:space_service}
+    url: jdbc:postgresql://${DATABASE_DOMAIN:localhost}:${DATABASE_PORT:5433}/${DATABASE_NAME:space_service}
     username: ${DATABASE_USERNAME:k_app}
     password: ${DATABASE_PASSWORD:123}
   jpa:
@@ -10,4 +10,4 @@ spring:
 
 application:
   title: Project For SWE
-  version: 1.0.0 
+  version: 1.0.0
