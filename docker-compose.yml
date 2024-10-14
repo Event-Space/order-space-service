@@ -4,11 +4,11 @@ services:
     container_name: space-service-db
     image: postgres:14
     environment:
-      POSTGRES_DB: space-service
+      POSTGRES_DB: space_service
       POSTGRES_USER: k_app
       POSTGRES_PASSWORD: 123
     ports:
-      - "5433:5432"
+      - "5432:5432"
     volumes:
       - space:/data/postgres
 
