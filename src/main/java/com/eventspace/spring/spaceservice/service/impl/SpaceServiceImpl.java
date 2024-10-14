@@ -1,7 +1,6 @@
 package com.eventspace.spring.spaceservice.service.impl;
 
 import com.eventspace.spring.spaceservice.dto.SpaceRequest;
-import com.eventspace.spring.spaceservice.dto.SpaceResponse;
 import com.eventspace.spring.spaceservice.mapper.SpaceMapper;
 import com.eventspace.spring.spaceservice.model.entity.Space;
 import com.eventspace.spring.spaceservice.repository.SpaceRepository;
@@ -20,7 +19,7 @@ public class SpaceServiceImpl implements SpaceService {
 
     @Override
     public Space addSpace(SpaceRequest spaceRequest) {
-        Space space = spaceMapper.toEntity(spaceRequest);
+        Space space = spaceMapper.spaceRequestToSpace(spaceRequest);
         spaceRepository.save(space);
         return space;
     }

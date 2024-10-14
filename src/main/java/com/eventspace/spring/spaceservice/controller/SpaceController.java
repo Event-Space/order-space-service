@@ -25,7 +25,7 @@ public class SpaceController {
         return ResponseEntity.ok(spaceService.getSpace(id));
     }
 
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<Space> createSpace(@RequestBody SpaceRequest spaceRequest) {
         return ResponseEntity.ok(spaceService.addSpace(spaceRequest));
     }
