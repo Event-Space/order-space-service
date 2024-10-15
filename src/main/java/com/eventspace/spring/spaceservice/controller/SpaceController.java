@@ -29,9 +29,11 @@ public class SpaceController {
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Space> createSpace( SpaceRequest spaceRequest, @RequestPart(name = "file") MultipartFile file) {
+    public ResponseEntity<Space> createSpace(@RequestPart("spaceRequest") SpaceRequest spaceRequest,
+                                             @RequestPart(name = "file") MultipartFile file) {
         return ResponseEntity.ok(spaceService.addSpace(spaceRequest, file));
     }
+
 
     @PutMapping(value = "/update/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Space> updateSpace(@RequestBody SpaceRequest spaceRequest, @PathVariable Long id, @RequestPart(name = "file") MultipartFile file) {
