@@ -5,8 +5,10 @@ import com.eventspace.spring.spaceservice.mapper.SpaceMapper;
 import com.eventspace.spring.spaceservice.model.entity.Space;
 import com.eventspace.spring.spaceservice.repository.SpaceRepository;
 import com.eventspace.spring.spaceservice.service.SpaceService;
+import com.eventspace.spring.spaceservice.service.StorageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,13 +18,19 @@ import java.util.Optional;
 public class SpaceServiceImpl implements SpaceService {
     private final SpaceRepository spaceRepository;
     private final SpaceMapper spaceMapper;
+    private final StorageService storageService;
 
     @Override
-    public Space addSpace(SpaceRequest spaceRequest) {
+    public Space addSpace(SpaceRequest spaceRequest, MultipartFile file) {
         Space space = spaceMapper.spaceRequestToSpace(spaceRequest);
-        spaceRepository.save(space);
-        return space;
+
+        String fileName = storageService.store(file);
+
+        space.setImageUrl(fileName);
+
+        return spaceRepository.save(space);
     }
+
 
     @Override
     public Space updateSpace(Long id, SpaceRequest spaceRequest) {
@@ -33,7 +41,6 @@ public class SpaceServiceImpl implements SpaceService {
         oldSpace.setLocation(spaceRequest.getLocation());
         oldSpace.setSize(spaceRequest.getSize());
         oldSpace.setMaxCapacity(spaceRequest.getMaxCapacity());
-        oldSpace.setAvailabilityStatus(spaceRequest.getAvailabilityStatus());
         spaceRepository.save(oldSpace);
         return oldSpace;
     }

@@ -4,8 +4,10 @@ import com.eventspace.spring.spaceservice.dto.SpaceRequest;
 import com.eventspace.spring.spaceservice.model.entity.Space;
 import com.eventspace.spring.spaceservice.service.SpaceService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -26,13 +28,13 @@ public class SpaceController {
         return ResponseEntity.ok(spaceService.getSpace(id));
     }
 
-    @PostMapping
-    public ResponseEntity<Space> createSpace(@RequestBody SpaceRequest spaceRequest) {
-        return ResponseEntity.ok(spaceService.addSpace(spaceRequest));
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Space> createSpace( SpaceRequest spaceRequest, @RequestPart(name = "file") MultipartFile file) {
+        return ResponseEntity.ok(spaceService.addSpace(spaceRequest, file));
     }
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity<Space> updateSpace(@RequestBody SpaceRequest spaceRequest, @PathVariable Long id) {
+    @PutMapping(value = "/update/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Space> updateSpace(@RequestBody SpaceRequest spaceRequest, @PathVariable Long id, @RequestPart(name = "file") MultipartFile file) {
         return ResponseEntity.ok(spaceService.updateSpace(id, spaceRequest));
     }
 

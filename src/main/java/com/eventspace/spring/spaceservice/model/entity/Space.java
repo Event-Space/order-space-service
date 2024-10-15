@@ -1,9 +1,6 @@
 package com.eventspace.spring.spaceservice.model.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
@@ -20,5 +17,6 @@ public class Space {
     private Integer size;
     private Integer maxCapacity;
     private Double baseRentalCost;
-    private Boolean availabilityStatus;
+    @Column(name = "image_url")
+    private String imageUrl;
 }
