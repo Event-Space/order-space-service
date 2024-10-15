@@ -17,6 +17,8 @@ springdoc:
   api-docs:
     enabled: true
     path: /security-api
+    servers:
+      - url: https://zenuki.kz
   swagger-ui:
     path: /swagger
 
