@@ -1,16 +1,9 @@
-FROM openjdk:17-jdk-slim
+FROM openjdk:21-jdk-slim
 
 EXPOSE 8080
 
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y wget curl
+COPY build/libs/order-service-1.0.jar order-service.jar
 
-RUN curl -s https://api.github.com/repos/Karlsooon/technoBackend/releases/latest \
-    | grep technoApp.jar \
-    | tail -n 1 \
-    | cut -d : -f 2,3 \
-    | tr -d \" \
-    | wget -qi -
-
-CMD ["java", "-jar", "technoApp.jar"]
+CMD ["java", "-jar", "order-service.jar"]
