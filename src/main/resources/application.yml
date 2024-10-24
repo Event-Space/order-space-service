@@ -1,11 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://${DATABASE_DOMAIN:localhost}:${DATABASE_PORT:5433}/${DATABASE_NAME:space_service}
-    username: ${DATABASE_USERNAME:k_app}
-    password: ${DATABASE_PASSWORD:123}
-  jpa:
-    hibernate:
-      ddl-auto: update
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5433}/${DB_NAME:space_service}
+    username: ${DB_USERNAME:k_app}
+    password: ${DB_PASSWORD:123}
 
 
 
@@ -16,9 +13,7 @@ application:
 springdoc:
   api-docs:
     enabled: true
-    path: /security-api
-    servers:
-      - url: https://zenuki.kz
+    path: /order-api
   swagger-ui:
     path: /swagger
 
