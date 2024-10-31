@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 @Entity
 @RequiredArgsConstructor
 @Data
-@Table(schema = "order_unit")
 public class Space {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
