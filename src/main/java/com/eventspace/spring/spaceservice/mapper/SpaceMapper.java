@@ -55,8 +55,17 @@ public class SpaceMapper {
         space.setMaxCapacity(spaceRequest.getMaxCapacity());
         space.setBaseRentalCost(spaceRequest.getBaseRentalCost());
 
+        System.out.println("Mapping SpaceRequest to Space:");
+        System.out.println("Name: " + spaceRequest.getName());
+        System.out.println("Address: " + spaceRequest.getAddress());
+        System.out.println("Location: " + spaceRequest.getLocation());
+        System.out.println("Size: " + spaceRequest.getSize());
+        System.out.println("Max Capacity: " + spaceRequest.getMaxCapacity());
+        System.out.println("Base Rental Cost: " + spaceRequest.getBaseRentalCost());
+
         return space;
     }
+
 
     public Space spaceResponseToSpace(SpaceResponse spaceResponse) {
         if (spaceResponse == null) {

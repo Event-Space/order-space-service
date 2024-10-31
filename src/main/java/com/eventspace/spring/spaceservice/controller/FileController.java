@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.nio.file.Files;
 
-@Controller
+@RestController
 @RequestMapping("/api/v1/files")
 @AllArgsConstructor
 @CrossOrigin("*")

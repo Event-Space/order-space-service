@@ -3,6 +3,8 @@ package com.eventspace.spring.spaceservice.controller;
 import com.eventspace.spring.spaceservice.dto.SpaceRequest;
 import com.eventspace.spring.spaceservice.model.entity.Space;
 import com.eventspace.spring.spaceservice.service.SpaceService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -29,14 +31,29 @@ public class SpaceController {
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Space> createSpace(@RequestPart("spaceRequest") SpaceRequest spaceRequest,
-                                             @RequestPart(name = "file") MultipartFile file) {
+    public ResponseEntity<Space> createSpace(
+            @RequestPart("spaceRequest") String spaceRequestJson,
+            @RequestPart("file") MultipartFile file) throws JsonProcessingException {
+
+        SpaceRequest spaceRequest = new ObjectMapper().readValue(spaceRequestJson, SpaceRequest.class);
+
         return ResponseEntity.ok(spaceService.addSpace(spaceRequest, file));
     }
 
 
+    @PutMapping(value = "/updateWithFile/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Space> updateSpaceWithFile(@PathVariable Long id, @RequestPart("spaceRequest") String spaceRequestJson,
+                                             @RequestPart(value = "file") MultipartFile file) throws Exception {
+
+        SpaceRequest spaceRequest = new ObjectMapper().readValue(spaceRequestJson, SpaceRequest.class);
+
+        return ResponseEntity.ok(spaceService.updateSpace(id, spaceRequest, file));
+    }
     @PutMapping(value = "/update/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Space> updateSpace(@RequestBody SpaceRequest spaceRequest, @PathVariable Long id, @RequestPart(name = "file") MultipartFile file) {
+    public ResponseEntity<Space> updateSpace(@PathVariable Long id, @RequestPart("spaceRequest") String spaceRequestJson) throws Exception {
+
+        SpaceRequest spaceRequest = new ObjectMapper().readValue(spaceRequestJson, SpaceRequest.class);
+
         return ResponseEntity.ok(spaceService.updateSpace(id, spaceRequest));
     }
 

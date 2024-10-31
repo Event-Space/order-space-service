@@ -12,7 +12,8 @@ import java.util.List;
 @Service
 public interface SpaceService {
     Space addSpace(SpaceRequest spaceRequest, MultipartFile file);
-    Space updateSpace(Long id, SpaceRequest spaceRequest);
+    Space updateSpace(Long id, SpaceRequest spaceRequest, MultipartFile file) throws Exception;
+    Space updateSpace(Long id, SpaceRequest spaceRequest) throws Exception;
     void deleteSpace(Long id);
     Space getSpace(Long id);
     List<Space> getAllSpace();

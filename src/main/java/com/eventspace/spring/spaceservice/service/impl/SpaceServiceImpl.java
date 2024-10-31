@@ -7,6 +7,7 @@ import com.eventspace.spring.spaceservice.repository.SpaceRepository;
 import com.eventspace.spring.spaceservice.service.SpaceService;
 import com.eventspace.spring.spaceservice.service.StorageService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.expression.ExpressionException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,27 +23,79 @@ public class SpaceServiceImpl implements SpaceService {
 
     @Override
     public Space addSpace(SpaceRequest spaceRequest, MultipartFile file) {
+        System.out.println("Received SpaceRequest: " + spaceRequest);
+
         Space space = spaceMapper.spaceRequestToSpace(spaceRequest);
 
-        String fileName = storageService.store(file);
+        if (space == null) {
+            System.out.println("Space mapping returned null.");
+            return null;
+        }
 
+        String fileName = storageService.store(file);
         space.setImageUrl(fileName);
 
         return spaceRepository.save(space);
     }
 
 
+
     @Override
-    public Space updateSpace(Long id, SpaceRequest spaceRequest) {
-        Space oldSpace = spaceRepository.findById(id).orElse(null);
-        assert oldSpace != null;
-        oldSpace.setName(spaceRequest.getName());
-        oldSpace.setAddress(spaceRequest.getAddress());
-        oldSpace.setLocation(spaceRequest.getLocation());
-        oldSpace.setSize(spaceRequest.getSize());
-        oldSpace.setMaxCapacity(spaceRequest.getMaxCapacity());
-        spaceRepository.save(oldSpace);
-        return oldSpace;
+    public Space updateSpace(Long id, SpaceRequest spaceRequest, MultipartFile file) {
+        Optional<Space> existingSpace = spaceRepository.findById(id);
+        System.out.println("Received SpaceRequest: " + spaceRequest);
+
+        if (spaceRequest.getName() != null) {
+            existingSpace.get().setName(spaceRequest.getName());
+        }
+        if (spaceRequest.getAddress() != null) {
+            existingSpace.get().setAddress(spaceRequest.getAddress());
+        }
+        if (spaceRequest.getLocation() != null) {
+            existingSpace.get().setLocation(spaceRequest.getLocation());
+        }
+        if (spaceRequest.getSize() != null) {
+            existingSpace.get().setSize(spaceRequest.getSize());
+        }
+        if (spaceRequest.getMaxCapacity() != null) {
+            existingSpace.get().setMaxCapacity(spaceRequest.getMaxCapacity());
+        }
+        if (spaceRequest.getBaseRentalCost() != null) {
+            existingSpace.get().setBaseRentalCost(spaceRequest.getBaseRentalCost());
+        }
+        if(file!=null){
+            String fileName = storageService.store(file);
+            existingSpace.get().setImageUrl(fileName);
+        }
+        return spaceRepository.save(existingSpace.get());
+    }
+
+    @Override
+    public Space updateSpace(Long id, SpaceRequest spaceRequest) throws Exception {
+        Space existingSpace = spaceRepository.findById(id)
+                .orElseThrow(() -> new Exception("Space not found with ID: " + id));
+
+        if (spaceRequest.getName() != null) {
+            existingSpace.setName(spaceRequest.getName());
+        }
+        if (spaceRequest.getAddress() != null) {
+            existingSpace.setAddress(spaceRequest.getAddress());
+        }
+        if (spaceRequest.getLocation() != null) {
+            existingSpace.setLocation(spaceRequest.getLocation());
+        }
+        if (spaceRequest.getSize() != null) {
+            existingSpace.setSize(spaceRequest.getSize());
+        }
+        if (spaceRequest.getMaxCapacity() != null) {
+            existingSpace.setMaxCapacity(spaceRequest.getMaxCapacity());
+        }
+        if (spaceRequest.getBaseRentalCost() != null) {
+            existingSpace.setBaseRentalCost(spaceRequest.getBaseRentalCost());
+        }
+
+
+        return spaceRepository.save(existingSpace);
     }
 
     @Override

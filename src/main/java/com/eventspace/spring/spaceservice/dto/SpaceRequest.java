@@ -2,11 +2,14 @@ package com.eventspace.spring.spaceservice.dto;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class SpaceRequest {
     private String name;
     private String address;
