@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @RequiredArgsConstructor
 @Data
@@ -19,4 +21,6 @@ public class Space {
     private Double baseRentalCost;
     @Column(name = "image_url")
     private String imageUrl;
+    @OneToMany(mappedBy = "space", cascade = CascadeType.ALL)
+    private List<Slot> slots;
 }

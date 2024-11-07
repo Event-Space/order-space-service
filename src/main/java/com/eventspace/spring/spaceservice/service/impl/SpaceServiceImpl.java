@@ -2,6 +2,7 @@ package com.eventspace.spring.spaceservice.service.impl;
 
 import com.eventspace.spring.spaceservice.dto.SpaceRequest;
 import com.eventspace.spring.spaceservice.mapper.SpaceMapper;
+import com.eventspace.spring.spaceservice.model.entity.Slot;
 import com.eventspace.spring.spaceservice.model.entity.Space;
 import com.eventspace.spring.spaceservice.repository.SpaceRepository;
 import com.eventspace.spring.spaceservice.service.SpaceService;
@@ -11,8 +12,13 @@ import org.springframework.expression.ExpressionException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -113,5 +119,9 @@ public class SpaceServiceImpl implements SpaceService {
     public List<Space> getAllSpace() {
         return spaceRepository.findAll();
 
+    }
+    @Override
+    public List<Slot> getFreeTimes(Long spaceId, LocalDate date) {
+        return spaceRepository.findFreeSlotsByDate(spaceId, date);
     }
 }

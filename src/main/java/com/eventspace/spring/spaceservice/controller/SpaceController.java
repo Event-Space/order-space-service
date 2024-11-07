@@ -1,16 +1,19 @@
 package com.eventspace.spring.spaceservice.controller;
 
 import com.eventspace.spring.spaceservice.dto.SpaceRequest;
+import com.eventspace.spring.spaceservice.model.entity.Slot;
 import com.eventspace.spring.spaceservice.model.entity.Space;
 import com.eventspace.spring.spaceservice.service.SpaceService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -61,5 +64,12 @@ public class SpaceController {
     public ResponseEntity<String> deleteSpace(@PathVariable Long id) {
         spaceService.deleteSpace(id);
         return ResponseEntity.ok("Space with id: " + id + " was deleted");
+    }
+
+    @GetMapping("/{spaceId}/free-times")
+    public List<Slot> getFreeTimes(
+            @PathVariable Long spaceId,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+        return spaceService.getFreeTimes(spaceId, date);
     }
 }
