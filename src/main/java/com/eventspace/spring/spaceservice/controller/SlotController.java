@@ -13,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/slots")
+@CrossOrigin("*")
 public class SlotController {
 
     private final SlotService slotService;
