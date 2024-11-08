@@ -3,6 +3,7 @@ package com.eventspace.spring.spaceservice.controller;
 
 import com.eventspace.spring.spaceservice.model.entity.Slot;
 import com.eventspace.spring.spaceservice.service.SlotService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,15 +14,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/slots")
+@RequiredArgsConstructor
 @CrossOrigin("*")
 public class SlotController {
 
     private final SlotService slotService;
 
-    @Autowired
-    public SlotController(SlotService slotService) {
-        this.slotService = slotService;
-    }
 
     @PostMapping("/{spaceId}")
     public ResponseEntity<Slot> createSlot(@PathVariable Long spaceId,
