@@ -20,7 +20,11 @@ springdoc:
   swagger-ui:
     path: /swagger
 
-
+kenuki:
+  security:
+    jwt:
+      secret: lol
+      expiration: 3600
 
 
 
