@@ -52,6 +52,8 @@ public class SpaceController {
 
         return ResponseEntity.ok(spaceService.updateSpace(id, spaceRequest, file));
     }
+
+
     @PutMapping(value = "/update/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Space> updateSpace(@PathVariable Long id, @RequestPart("spaceRequest") String spaceRequestJson) throws Exception {
 

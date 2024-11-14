@@ -1,5 +1,6 @@
 package com.eventspace.spring.spaceservice.service;
 
+import com.eventspace.spring.spaceservice.dto.EventDto;
 import com.eventspace.spring.spaceservice.model.entity.Event;
 
 import java.util.List;
@@ -12,9 +13,9 @@ public interface EventService {
 
     Optional<Event> getEventById(Long id);
 
-    Event createEvent(Event event);
+    Event createEvent(EventDto event);
 
-    Event updateEvent(Long id, Event eventDetails);
+    Event updateEvent(Long id, EventDto eventDetails);
 
     void deleteEvent(Long id);
 

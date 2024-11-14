@@ -1,27 +1,27 @@
 package com.eventspace.spring.spaceservice.controller;
 
 
+import com.eventspace.spring.spaceservice.dto.EventDto;
+import com.eventspace.spring.spaceservice.dto.SpaceRequest;
 import com.eventspace.spring.spaceservice.model.entity.Event;
 import com.eventspace.spring.spaceservice.service.EventService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 
 
 @RestController
 @RequestMapping("/api/v1/events")
+@RequiredArgsConstructor
 @CrossOrigin("*")
 public class EventController {
 
     private final EventService eventService;
-
-    @Autowired
-    public EventController(EventService eventService) {
-        this.eventService = eventService;
-    }
 
     @GetMapping
     public List<Event> getAllEvents() {
@@ -36,14 +36,17 @@ public class EventController {
     }
 
     @PostMapping
-    public Event createEvent(@RequestBody Event event) {
-        return eventService.createEvent(event);
+    public Event createEvent(@RequestPart("eventRequest") String spaceRequestJson) throws JsonProcessingException {
+        EventDto eventDto = new ObjectMapper().readValue(spaceRequestJson, EventDto.class);
+
+        return eventService.createEvent(eventDto);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Event> updateEvent(@PathVariable Long id, @RequestBody Event eventDetails) {
+    public ResponseEntity<Event> updateEvent(@PathVariable Long id, @RequestPart("eventRequest") String spaceRequestJson) throws JsonProcessingException{
         try {
-            Event updatedEvent = eventService.updateEvent(id, eventDetails);
+            EventDto eventDto = new ObjectMapper().readValue(spaceRequestJson, EventDto.class);
+            Event updatedEvent = eventService.updateEvent(id, eventDto);
             return ResponseEntity.ok(updatedEvent);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();

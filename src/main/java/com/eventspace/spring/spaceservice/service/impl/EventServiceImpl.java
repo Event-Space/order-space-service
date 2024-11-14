@@ -1,5 +1,7 @@
 package com.eventspace.spring.spaceservice.service.impl;
 
+import com.eventspace.spring.spaceservice.dto.EventDto;
+import com.eventspace.spring.spaceservice.mapper.EventMapper;
 import com.eventspace.spring.spaceservice.model.entity.Event;
 import com.eventspace.spring.spaceservice.repository.EventRepository;
 import com.eventspace.spring.spaceservice.service.EventService;
@@ -16,6 +18,8 @@ public class EventServiceImpl implements EventService {
 
     private final EventRepository eventRepository;
 
+    private final EventMapper eventMapper;
+
 
     public List<Event> getAllEvents() {
         return eventRepository.findAll();
@@ -25,11 +29,12 @@ public class EventServiceImpl implements EventService {
         return eventRepository.findById(id);
     }
 
-    public Event createEvent(Event event) {
-        return eventRepository.save(event);
+    public Event createEvent(EventDto event) {
+        Event event1 = eventMapper.eventRequestToEvent(event);
+        return eventRepository.save(event1);
     }
 
-    public Event updateEvent(Long id, Event eventDetails) {
+    public Event updateEvent(Long id, EventDto eventDetails) {
         Event event = eventRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Event not found with id: " + id));
 
