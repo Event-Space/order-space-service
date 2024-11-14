@@ -5,19 +5,22 @@ import org.kenuki.securitymodule.sessions.SessionMe;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
+import java.util.Optional;
 
 
 public interface EventService {
 
-    ResponseEntity<?> createEvent(SessionMe sessionMe, Event event);
+    List<Event> getAllEvents();
 
-    ResponseEntity<?> updateEvent(Long eventId, SessionMe sessionMe, Event event);
+    Optional<Event> getEventById(Long id);
 
-    ResponseEntity<?> deleteEvent(Long eventId, SessionMe sessionMe);
+    Event createEvent(Event event);
 
-    ResponseEntity<List<Event>> getAllEvents(SessionMe sessionMe);
+    Event updateEvent(Long id, Event eventDetails);
 
-    ResponseEntity<List<Event>> getMyEvents(SessionMe sessionMe);
+    void deleteEvent(Long id);
+
+    List<Event> getEventsByUser(String createdBy);
 }
 
 

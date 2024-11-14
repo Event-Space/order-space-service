@@ -4,12 +4,9 @@ import com.eventspace.spring.spaceservice.model.entity.Event;
 import com.eventspace.spring.spaceservice.repository.EventRepository;
 import com.eventspace.spring.spaceservice.service.EventService;
 import lombok.RequiredArgsConstructor;
-import org.kenuki.securitymodule.sessions.SessionMe;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 
@@ -20,67 +17,38 @@ public class EventServiceImpl implements EventService {
     private final EventRepository eventRepository;
 
 
-    @Override
-    public ResponseEntity<?> createEvent(SessionMe sessionMe, Event event) {
-        Map<String, Object> user = sessionMe.getAttributes();
-        event.setCreatedBy(user.get("email").toString());
-        eventRepository.save(event);
-        return ResponseEntity.ok("Event created successfully");
+    public List<Event> getAllEvents() {
+        return eventRepository.findAll();
     }
 
-    @Override
-    public ResponseEntity<?> updateEvent(Long eventId, SessionMe sessionMe, Event event) {
-        Map<String, Object> user = sessionMe.getAttributes();
-        Optional<Event> existingEventOpt = eventRepository.findById(eventId);
+    public Optional<Event> getEventById(Long id) {
+        return eventRepository.findById(id);
+    }
 
-        if (existingEventOpt.isPresent()) {
-            Event existingEvent = existingEventOpt.get();
+    public Event createEvent(Event event) {
+        return eventRepository.save(event);
+    }
 
-            if (!existingEvent.getCreatedBy().equals(user.get("email").toString())) {
-                return ResponseEntity.status(403).body("You do not have permission to update this event");
-            }
+    public Event updateEvent(Long id, Event eventDetails) {
+        Event event = eventRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Event not found with id: " + id));
 
-            existingEvent.setName(event.getName());
-            existingEvent.setDate(event.getDate());
-            existingEvent.setLocation(event.getLocation());
-            eventRepository.save(existingEvent);
+        event.setName(eventDetails.getName());
+        event.setDate(eventDetails.getDate());
+        event.setLocation(eventDetails.getLocation());
+        event.setCreatedBy(eventDetails.getCreatedBy());
 
-            return ResponseEntity.ok("Event updated successfully");
-        } else {
-            return ResponseEntity.status(404).body("Event not found");
+        return eventRepository.save(event);
+    }
+
+    public void deleteEvent(Long id) {
+        if (!eventRepository.existsById(id)) {
+            throw new IllegalArgumentException("Event not found with id: " + id);
         }
+        eventRepository.deleteById(id);
     }
-
-    @Override
-    public ResponseEntity<?> deleteEvent(Long eventId, SessionMe sessionMe) {
-        Map<String, Object> user = sessionMe.getAttributes();
-        Optional<Event> eventOpt = eventRepository.findById(eventId);
-
-        if (eventOpt.isPresent()) {
-            Event event = eventOpt.get();
-
-            if (!event.getCreatedBy().equals(user.get("email").toString())) {
-                return ResponseEntity.status(403).body("You do not have permission to delete this event");
-            }
-
-            eventRepository.delete(event);
-            return ResponseEntity.ok("Event deleted successfully");
-        } else {
-            return ResponseEntity.status(404).body("Event not found");
-        }
-    }
-
-    @Override
-    public ResponseEntity<List<Event>> getAllEvents(SessionMe sessionMe) {
-        List<Event> events = eventRepository.findAll();
-        return ResponseEntity.ok(events);
-    }
-
-    @Override
-    public ResponseEntity<List<Event>> getMyEvents(SessionMe sessionMe) {
-        Map<String, Object> user = sessionMe.getAttributes();
-        List<Event> events = eventRepository.findByCreatedBy(user.get("email").toString());
-        return ResponseEntity.ok(events);
+    public List<Event> getEventsByUser(String createdBy) {
+        return eventRepository.findByCreatedBy(createdBy);
     }
 }
 

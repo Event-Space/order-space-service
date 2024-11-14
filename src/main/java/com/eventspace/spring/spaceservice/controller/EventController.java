@@ -3,52 +3,68 @@ package com.eventspace.spring.spaceservice.controller;
 
 import com.eventspace.spring.spaceservice.model.entity.Event;
 import com.eventspace.spring.spaceservice.service.EventService;
-import org.kenuki.securitymodule.annotations.SecureMe;
-import org.kenuki.securitymodule.sessions.SessionMe;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+
 @RestController
-@RequestMapping("/events")
+@RequestMapping("/api/v1/events")
+@CrossOrigin("*")
 public class EventController {
 
     private final EventService eventService;
 
+    @Autowired
     public EventController(EventService eventService) {
         this.eventService = eventService;
     }
 
-    @PostMapping
-    @SecureMe
-    public ResponseEntity<?> createEvent(@RequestBody Event event,
-                                         SessionMe sessionMe) {
-        return eventService.createEvent(sessionMe, event);
-    }
-
-    @PutMapping("/{eventId}")
-    public ResponseEntity<?> updateEvent(@PathVariable Long eventId,
-                                         @RequestBody Event event,
-                                          SessionMe sessionMe) {
-        return eventService.updateEvent(eventId, sessionMe, event);
-    }
-
-    @DeleteMapping("/{eventId}")
-    public ResponseEntity<?> deleteEvent(@PathVariable Long eventId,
-                                          SessionMe sessionMe) {
-        return eventService.deleteEvent(eventId, sessionMe);
-    }
-
     @GetMapping
-    public ResponseEntity<List<Event>> getAllEvents(SessionMe sessionMe) {
-        return eventService.getAllEvents(sessionMe);
+    public List<Event> getAllEvents() {
+        return eventService.getAllEvents();
     }
 
-    @GetMapping("/my-events")
-    public ResponseEntity<List<Event>> getMyEvents(SessionMe sessionMe) {
-        return eventService.getMyEvents(sessionMe);
+    @GetMapping("/{id}")
+    public ResponseEntity<Event> getEventById(@PathVariable Long id) {
+        return eventService.getEventById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PostMapping
+    public Event createEvent(@RequestBody Event event) {
+        return eventService.createEvent(event);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Event> updateEvent(@PathVariable Long id, @RequestBody Event eventDetails) {
+        try {
+            Event updatedEvent = eventService.updateEvent(id, eventDetails);
+            return ResponseEntity.ok(updatedEvent);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteEvent(@PathVariable Long id) {
+        try {
+            eventService.deleteEvent(id);
+            return ResponseEntity.noContent().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/user/{createdBy}")
+    public List<Event> getEventsByUser(@PathVariable String createdBy) {
+        return eventService.getEventsByUser(createdBy);
     }
 }
+
 
 
