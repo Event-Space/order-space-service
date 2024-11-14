@@ -2,11 +2,13 @@ package com.eventspace.spring.spaceservice.service;
 
 import com.eventspace.spring.spaceservice.dto.EventDto;
 import com.eventspace.spring.spaceservice.model.entity.Event;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 
+@Service
 public interface EventService {
 
     List<Event> getAllEvents();
