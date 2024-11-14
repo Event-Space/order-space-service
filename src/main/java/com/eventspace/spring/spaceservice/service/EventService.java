@@ -1,8 +1,6 @@
 package com.eventspace.spring.spaceservice.service;
 
 import com.eventspace.spring.spaceservice.model.entity.Event;
-import org.kenuki.securitymodule.sessions.SessionMe;
-import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 import java.util.Optional;
