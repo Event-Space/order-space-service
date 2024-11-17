@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5433}/${DB_NAME:space_service}
-    username: ${DB_USERNAME:k_app}
-    password: ${DB_PASSWORD:123}
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:10000}/${DB_NAME:event-space}
+    username: ${DB_USERNAME:user}
+    password: ${DB_PASSWORD:user}
   flyway:
     create-schemas: true
     default-schema: order_unit
@@ -23,11 +23,8 @@ springdoc:
   swagger-ui:
     path: /swagger
 
-kenuki:
-  security:
-    jwt:
-      secret: lol
-      expiration: 3600
+security:
+  jwt: ${JWT_SECRET:here_is_the_jwt_secret_override_it_please!}
 
 
 
