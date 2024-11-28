@@ -95,6 +95,11 @@ public class SlotController {
                 .collect(Collectors.toList());
     }
 
+    @GetMapping("/bookings/byId/{id}")
+    public BookingDto getBookingsById(@PathVariable Long id) {
+        return mapToDTO(slotService.getBookingsById(id));
+    }
+
     private BookingDto mapToDTO(Booking booking) {
         return new BookingDto(
                 booking.getId(),
