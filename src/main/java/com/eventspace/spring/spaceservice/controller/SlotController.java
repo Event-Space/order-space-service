@@ -98,8 +98,8 @@ public class SlotController {
     private BookingDto mapToDTO(Booking booking) {
         return new BookingDto(
                 booking.getId(),
-                booking.getSlot().getId(),
-                booking.getSlot().getSpace().getId(),
+                booking.getSlot(),
+                booking.getSlot().getSpace(),
                 booking.getUserEmail(),
                 booking.getBookingTime(),
                 booking.getStatus()
