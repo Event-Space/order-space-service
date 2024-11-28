@@ -14,6 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/slots")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class SlotController {
 
     private final SlotService slotService;
