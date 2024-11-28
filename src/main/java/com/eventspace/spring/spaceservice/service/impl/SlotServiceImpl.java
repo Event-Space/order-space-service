@@ -86,4 +86,12 @@ public class SlotServiceImpl implements SlotService {
         return bookingRepository.findBookingsByUserEmail(userEmail);
     }
 
+    public Booking updateBookingStatus(Long bookingId, String status) {
+        Booking booking = bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new IllegalArgumentException("Booking not found"));
+
+        booking.setStatus(status);
+        return bookingRepository.save(booking);
+    }
+
 }

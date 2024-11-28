@@ -21,4 +21,6 @@ public interface SlotService {
     List<Booking> getBookingsBySpaceId(Long spaceId);
 
     List<Booking> getBookingsByUserEmail(String userEmail);
+
+    Booking updateBookingStatus(Long bookingId, String status);
 }

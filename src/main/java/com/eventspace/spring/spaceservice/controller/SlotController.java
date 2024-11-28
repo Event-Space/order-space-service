@@ -1,5 +1,6 @@
 package com.eventspace.spring.spaceservice.controller;
 
+import com.eventspace.spring.spaceservice.dto.BookingDto;
 import com.eventspace.spring.spaceservice.model.entity.Booking;
 import com.eventspace.spring.spaceservice.model.entity.Slot;
 import com.eventspace.spring.spaceservice.service.SlotService;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/slots")
@@ -64,28 +66,57 @@ public class SlotController {
         }
     }
 
-    // Book a slot
     @PostMapping("/book/{slotId}")
-    public ResponseEntity<Booking> bookSlot(
+    public ResponseEntity<BookingDto> bookSlot(
             @PathVariable Long slotId,
             @RequestParam String userEmail) {
         try {
             Booking booking = slotService.bookSlot(slotId, userEmail);
-            return new ResponseEntity<>(booking, HttpStatus.CREATED);
+            BookingDto bookingDTO = mapToDTO(booking);
+            return new ResponseEntity<>(bookingDTO, HttpStatus.CREATED);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
         }
     }
 
-    // Get all bookings for a specific space
     @GetMapping("/bookings/{spaceId}")
-    public ResponseEntity<List<Booking>> getBookingsBySpaceId(@PathVariable Long spaceId) {
+    public ResponseEntity<List<BookingDto>> getBookingsBySpaceId(@PathVariable Long spaceId) {
         List<Booking> bookings = slotService.getBookingsBySpaceId(spaceId);
-        return new ResponseEntity<>(bookings, HttpStatus.OK);
+        List<BookingDto> bookingDTOs = bookings.stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
+        return new ResponseEntity<>(bookingDTOs, HttpStatus.OK);
     }
 
     @GetMapping("/bookings/email")
-    public List<Booking> getBookingsByEmail(@RequestParam String userEmail) {
-        return slotService.getBookingsByUserEmail(userEmail);
+    public List<BookingDto> getBookingsByEmail(@RequestParam String userEmail) {
+        return slotService.getBookingsByUserEmail(userEmail).stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
     }
+
+    private BookingDto mapToDTO(Booking booking) {
+        return new BookingDto(
+                booking.getId(),
+                booking.getSlot().getId(),
+                booking.getSlot().getSpace().getId(),
+                booking.getUserEmail(),
+                booking.getBookingTime(),
+                booking.getStatus()
+        );
+    }
+
+    @PatchMapping("/bookings/{bookingId}/status")
+    public ResponseEntity<BookingDto> updateBookingStatus(
+            @PathVariable Long bookingId,
+            @RequestParam String status) {
+        try {
+            Booking updatedBooking = slotService.updateBookingStatus(bookingId, status);
+            BookingDto bookingDTO = mapToDTO(updatedBooking);
+            return new ResponseEntity<>(bookingDTO, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }
