@@ -12,6 +12,8 @@ public interface SlotService {
 
     List<Slot> getSlotsBySpaceId(Long spaceId);
 
+    List<Slot> getAllSlots();
+
     Slot updateSlotBookingStatus(Long slotId, boolean isBooked);
 
     void deleteSlot(Long slotId);
