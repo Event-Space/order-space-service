@@ -42,9 +42,9 @@ public class SlotController {
         return new ResponseEntity<>(slots, HttpStatus.OK);
     }
 
-    @GetMapping("/")
-    public ResponseEntity<List<Slot>> getAllSlots() {
-        List<Slot> slots = slotService.getAllSlots();
+    @GetMapping("/bookings")
+    public ResponseEntity<List<Booking>> getAllSlots() {
+        List<Booking>  slots = slotService.getAllBookings();
         return new ResponseEntity<>(slots, HttpStatus.OK);
     }
 
