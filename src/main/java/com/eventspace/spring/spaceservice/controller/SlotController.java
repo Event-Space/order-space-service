@@ -42,6 +42,12 @@ public class SlotController {
         return new ResponseEntity<>(slots, HttpStatus.OK);
     }
 
+    @GetMapping("/")
+    public ResponseEntity<List<Slot>> getAllSlots() {
+        List<Slot> slots = slotService.getAllSlots();
+        return new ResponseEntity<>(slots, HttpStatus.OK);
+    }
+
     // Update booking status of a slot
     @PatchMapping("/{slotId}")
     public ResponseEntity<Slot> updateSlotBookingStatus(

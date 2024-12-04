@@ -41,6 +41,11 @@ public class SlotServiceImpl implements SlotService {
     }
 
     @Override
+    public List<Slot> getAllSlots() {
+        return slotRepository.findAll();
+    }
+
+    @Override
     public Slot updateSlotBookingStatus(Long slotId, boolean isBooked) {
         Slot slot = slotRepository.findById(slotId).orElseThrow(() ->
                 new IllegalArgumentException("Slot with ID " + slotId + " not found"));
