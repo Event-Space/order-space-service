@@ -41,8 +41,8 @@ public class SlotServiceImpl implements SlotService {
     }
 
     @Override
-    public List<Slot> getAllSlots() {
-        return slotRepository.findAll();
+    public List<Booking> getAllBookings() {
+        return bookingRepository.findAll();
     }
 
     @Override
