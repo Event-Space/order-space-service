@@ -12,7 +12,7 @@ public interface SlotService {
 
     List<Slot> getSlotsBySpaceId(Long spaceId);
 
-    List<Slot> getAllSlots();
+    List<Booking> getAllBookings();
 
     Slot updateSlotBookingStatus(Long slotId, boolean isBooked);
 
