@@ -106,6 +106,17 @@ public class SlotController {
         return mapToDTO(slotService.getBookingsById(id));
     }
 
+    @DeleteMapping("/bookings/{bookingId}")
+    public ResponseEntity<Void> cancelBooking(@PathVariable Long bookingId) {
+        try {
+            slotService.cancelBooking(bookingId);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+
     private BookingDto mapToDTO(Booking booking) {
         return new BookingDto(
                 booking.getId(),

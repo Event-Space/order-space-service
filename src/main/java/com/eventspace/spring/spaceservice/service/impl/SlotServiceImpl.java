@@ -104,4 +104,13 @@ public class SlotServiceImpl implements SlotService {
         return bookingRepository.save(booking);
     }
 
+    @Override
+    public void cancelBooking(Long bookingId) {
+        if (!bookingRepository.existsById(bookingId)) {
+            throw new IllegalArgumentException("Booking not found");
+        }
+        bookingRepository.deleteById(bookingId);
+    }
+
+
 }

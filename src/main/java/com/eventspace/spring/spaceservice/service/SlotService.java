@@ -27,4 +27,7 @@ public interface SlotService {
     Booking getBookingsById(Long id);
 
     Booking updateBookingStatus(Long bookingId, String status);
+
+    void cancelBooking(Long bookingId);
+
 }
