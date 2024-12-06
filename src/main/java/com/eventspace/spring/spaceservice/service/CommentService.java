@@ -12,5 +12,6 @@ public interface CommentService {
     Comment getCommentById(Long id);
     List<Comment> getAllComments();
     List<Comment> getCommentsBySpaceId(Long spaceId);
+    List<Comment> getCommentsByUserEmail(String userEmail);
 }
 
