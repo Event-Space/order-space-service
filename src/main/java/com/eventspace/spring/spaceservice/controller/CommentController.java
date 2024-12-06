@@ -48,4 +48,9 @@ public class CommentController {
     public List<Comment> getCommentsBySpaceId(@PathVariable Long spaceId) {
         return commentService.getCommentsBySpaceId(spaceId);
     }
+
+    @GetMapping("/user/{userEmail}")
+    public List<Comment> getCommentsByUserEmail(@PathVariable String userEmail) {
+        return commentService.getCommentsByUserEmail(userEmail);
+    }
 }
