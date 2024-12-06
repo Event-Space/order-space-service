@@ -30,4 +30,6 @@ public interface SlotService {
 
     void cancelBooking(Long bookingId);
 
+    Booking updateBookingSlot(Long bookingId, Long newSlotId);
+
 }
