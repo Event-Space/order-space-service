@@ -113,4 +113,27 @@ public class SlotServiceImpl implements SlotService {
     }
 
 
+
+    public Booking updateBookingSlot(Long bookingId, Long newSlotId) {
+        Booking booking = getBookingsById(bookingId);
+        Slot newSlot = slotRepository.findById(newSlotId)
+                .orElseThrow(() -> new IllegalArgumentException("Slot not found"));
+
+        if (newSlot.isBooked()) {
+            throw new IllegalArgumentException("Slot is already booked");
+        }
+
+        Slot currentSlot = booking.getSlot();
+        currentSlot.setBooked(false);
+        newSlot.setBooked(true);
+
+        booking.setSlot(newSlot);
+        slotRepository.save(currentSlot);
+        slotRepository.save(newSlot);
+
+        return bookingRepository.save(booking);
+    }
+
+
+
 }
