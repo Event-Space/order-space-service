@@ -116,6 +116,20 @@ public class SlotController {
         }
     }
 
+    @PatchMapping("/bookings/{bookingId}/slot")
+    public ResponseEntity<BookingDto> updateBookingSlot(
+            @PathVariable Long bookingId,
+            @RequestParam Long newSlotId) {
+        try {
+            Booking updatedBooking = slotService.updateBookingSlot(bookingId, newSlotId);
+            BookingDto bookingDTO = mapToDTO(updatedBooking);
+            return new ResponseEntity<>(bookingDTO, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
 
     private BookingDto mapToDTO(Booking booking) {
         return new BookingDto(
