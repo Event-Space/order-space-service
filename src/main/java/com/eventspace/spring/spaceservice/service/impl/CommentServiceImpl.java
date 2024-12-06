@@ -59,4 +59,8 @@ public class CommentServiceImpl implements CommentService {
     public List<Comment> getCommentsBySpaceId(Long spaceId) {
         return commentRepository.findBySpaceId(spaceId);
     }
+
+    public List<Comment> getCommentsByUserEmail(String userEmail) {
+        return commentRepository.findByUserEmail(userEmail);
+    }
 }
