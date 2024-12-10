@@ -15,7 +15,7 @@ public class SwaggerConfig {
                 .info(new Info().title("Event Space")
                         .version("v1")
                         .description("API Documentation for your project"))
-                .addServersItem(new Server().url("http://kenuki.org:10002")).addServersItem(new Server().url("https://event-space.kenuki.org/order-service"));
+                .addServersItem(new Server().url("https://space-event.kenuki.org/order-service"));
     }
 }
 

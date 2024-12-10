@@ -6,9 +6,6 @@ spring:
   flyway:
     create-schemas: true
     default-schema: order_unit
-  jpa:
-    hibernate:
-      ddl-auto: update
 storage:
   directory: ${STORAGE_DIR:upload-dir}
 
