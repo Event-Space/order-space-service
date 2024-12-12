@@ -1,11 +1,13 @@
 package com.eventspace.spring.spaceservice.service.impl;
 
+import com.eventspace.spring.spaceservice.dto.NotificationDTO;
 import com.eventspace.spring.spaceservice.model.entity.Booking;
 import com.eventspace.spring.spaceservice.model.entity.Slot;
 import com.eventspace.spring.spaceservice.model.entity.Space;
 import com.eventspace.spring.spaceservice.repository.BookingRepository;
 import com.eventspace.spring.spaceservice.repository.SlotRepository;
 import com.eventspace.spring.spaceservice.repository.SpaceRepository;
+import com.eventspace.spring.spaceservice.service.NotificationService;
 import com.eventspace.spring.spaceservice.service.SlotService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,7 @@ public class SlotServiceImpl implements SlotService {
     private final SlotRepository slotRepository;
     private final SpaceRepository spaceRepository;
     private final BookingRepository bookingRepository;
+    private final NotificationService notificationService;
 
     @Override
     public Slot createSlot(Long spaceId, LocalDateTime startTime, LocalDateTime endTime) {
@@ -78,6 +81,14 @@ public class SlotServiceImpl implements SlotService {
         booking.setUserEmail(userEmail);
         booking.setBookingTime(LocalDateTime.now());
         booking.setStatus("CONFIRMED");
+
+        notificationService.sendNotification(
+                new NotificationDTO(
+                        "You ordered a new space: " + slot.getSpace().getName() +
+                                ".\nAt time: " + booking.getBookingTime() + ".",
+                        userEmail)
+        );
+
         return bookingRepository.save(booking);
     }
 
@@ -101,6 +112,11 @@ public class SlotServiceImpl implements SlotService {
                 .orElseThrow(() -> new IllegalArgumentException("Booking not found"));
 
         booking.setStatus(status);
+        notificationService.sendNotification(
+                new NotificationDTO(
+                        "Booking: " + booking.getSlot().getSpace().getName() + " have new status: " + status + ".",
+                        booking.getUserEmail())
+        );
         return bookingRepository.save(booking);
     }
 
@@ -109,7 +125,15 @@ public class SlotServiceImpl implements SlotService {
         if (!bookingRepository.existsById(bookingId)) {
             throw new IllegalArgumentException("Booking not found");
         }
+        Booking booking = bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new IllegalArgumentException("Booking not found"));
         bookingRepository.deleteById(bookingId);
+        notificationService.sendNotification(
+                new NotificationDTO(
+                        "Booking: " + booking.getSlot().getSpace().getName() + " have been canceled.",
+                        booking.getUserEmail()
+                )
+        );
     }
 
 
