@@ -31,12 +31,14 @@ class NotificationController(
         return notificationService.getNotifications(email, isRead)
     }
 
+    @SecureMe
     @GetMapping("/read")
     fun readNotifications(sessionMe: SessionMe, @RequestParam notificationId: Long): ResponseEntity<Nothing> {
         notificationService.readNotification(notificationId)
         return ResponseEntity.ok().build()
     }
 
+    @SecureMe
     @GetMapping("/count-unread")
     fun countUnreadNotifications(sessionMe: SessionMe): Long {
         val email = sessionMe.getAttribute<String>("email") ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Этой ошибки не должно быть напиши Русику")
