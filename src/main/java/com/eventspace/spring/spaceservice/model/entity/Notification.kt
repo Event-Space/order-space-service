@@ -7,7 +7,7 @@ import jakarta.persistence.*
 class Notification (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long? = null,
+    val id: Long? = null,
     var isRead: Boolean = false,
     var content: String? = null,
     @ManyToOne
