@@ -9,6 +9,7 @@ import jakarta.persistence.Table
 @Table(name = "notifications", schema = "order_unit")
 class Notification (
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
     var isRead: Boolean = false,
     var content: String? = null,
