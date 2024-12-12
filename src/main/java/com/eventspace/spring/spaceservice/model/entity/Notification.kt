@@ -1,9 +1,6 @@
 package com.eventspace.spring.spaceservice.model.entity
 
-import jakarta.persistence.Entity
-import jakarta.persistence.Id
-import jakarta.persistence.ManyToOne
-import jakarta.persistence.Table
+import jakarta.persistence.*
 
 @Entity
 @Table(name = "notifications", schema = "order_unit")
